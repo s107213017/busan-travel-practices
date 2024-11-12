@@ -2,19 +2,20 @@
 <html>
 <head>
   <title>韓語旅遊會話學習</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     @import url('https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css');
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap');
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
+      background-color: #f5f5f5;
     }
     #buttons {
       margin-bottom: 20px;
     }
-    .btn-category {
-      margin: 5px;
+    button {
+      margin-right: 10px;
+      padding: 10px;
     }
     #content {
       margin-top: 20px;
@@ -22,40 +23,38 @@
     .dialog {
       margin-bottom: 20px;
       padding: 20px;
+      border-radius: 10px;
       background-color: #ffffff;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .play-button {
-      margin-top: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
     .text-chinese {
       font-family: 'cwTeXFangSong', serif;
-      font-size: 1.2em;
       margin-bottom: 5px;
     }
     .text-korean {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.2em;
       margin-bottom: 10px;
+    }
+    .play-button {
+      margin-right: 15px;
     }
   </style>
 </head>
 <body>
-  <div class="container mt-5">
-    <div id="buttons" class="text-center">
-      <button class="btn btn-primary btn-category" onclick="showContent('basic')">必備基本用語</button>
-      <button class="btn btn-primary btn-category" onclick="showContent('transportation')">交通篇</button>
-      <button class="btn btn-primary btn-category" onclick="showContent('accommodation')">住宿篇</button>
-      <button class="btn btn-primary btn-category" onclick="showContent('restaurant')">餐廳篇</button>
-      <button class="btn btn-primary btn-category" onclick="showContent('shopping')">購物篇</button>
+  <div class="container">
+    <div id="buttons" class="btn-group" role="group">
+      <button class="btn btn-primary" onclick="showContent('basic')">必備基本用語</button>
+      <button class="btn btn-primary" onclick="showContent('transportation')">交通篇</button>
+      <button class="btn btn-primary" onclick="showContent('accommodation')">住宿篇</button>
+      <button class="btn btn-primary" onclick="showContent('restaurant')">餐廳篇</button>
+      <button class="btn btn-primary" onclick="showContent('shopping')">購物篇</button>
     </div>
+
     <div id="content"></div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // 定義資料內容
       const contents = {
         basic: [
           { id: 1, text: '你好', korean: '안녕하세요' },
@@ -87,20 +86,31 @@
 
         contents[category].forEach((item) => {
           const dialogDiv = document.createElement('div');
-          dialogDiv.classList.add('dialog');
-          dialogDiv.innerHTML = `<span class="text-chinese">(${item.id}) ${item.text}</span><span class="text-korean">${item.korean}</span>`;
+          dialogDiv.classList.add('dialog', 'd-flex', 'align-items-center');
 
           const playButton = document.createElement('button');
           playButton.classList.add('btn', 'btn-success', 'play-button');
           playButton.innerText = '播放';
           playButton.onclick = () => playAudio(item.korean);
 
+          const textDiv = document.createElement('div');
+          textDiv.classList.add('ml-3');
+          textDiv.innerHTML = `
+            (${item.id}) <br/>
+            <span class="text-chinese">${item.text}</span><br/>
+            <span class="text-korean">${item.korean}</span>
+          `;
+
           dialogDiv.appendChild(playButton);
+          dialogDiv.appendChild(textDiv);
           container.appendChild(dialogDiv);
         });
       };
 
-      // 新的播放音頻函數，使用 Google Cloud TTS API
+      // 預設顯示 "必備基本用語" 的內容
+      showContent('basic');
+
+      // 定義播放音頻的函數
       window.playAudio = async function(text) {
         try {
           const response = await fetch('/api/tts', {
@@ -108,21 +118,16 @@
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              text: text,
-              languageCode: 'ko-KR',
-            })
+            body: JSON.stringify({ text: text, languageCode: 'ko-KR' })
           });
 
           if (!response.ok) {
             throw new Error('語音請求失敗');
           }
 
-          // 獲取音頻數據
           const data = await response.json();
           const audioSrc = `data:audio/mp3;base64,${data.audioContent}`;
           
-          // 播放音頻
           const audio = new Audio(audioSrc);
           audio.play();
         } catch (error) {
@@ -132,8 +137,6 @@
       };
     });
   </script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
