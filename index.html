@@ -53,7 +53,7 @@
 <body>
   <div class="container">
     <div class="text-center mt-4 mb-4">
-      <h2><span class="text-chinese">怡娟</span><span class="text-korean">와 🪣 의</span><span class="text-chinese">釜山行前韓語口說抱佛腳班</span></h2> <!-- 新增標題 -->
+      <h2><span class="text-chinese">🇰🇷✈️怡娟</span><span class="text-korean">와 🪣 의</span><span class="text-chinese">釜山行前韓語會話抱佛腳班🎙️📚</span></h2> <!-- 新增標題 -->
     </div>
 
     <div id="buttons" class="btn-group" role="group">
@@ -71,25 +71,110 @@
     document.addEventListener('DOMContentLoaded', function() {
       const contents = {
         basic: [
-          { id: 1, text: '你好', korean: '안녕하세요' },
-          { id: 2, text: '謝謝', korean: '감사합니다' },
-          { id: 3, text: '對不起', korean: '죄송합니다' }
+          { id: 1, text: '你好。', korean: '안녕하세요.' },
+          { id: 2, text: '謝謝。', korean: '감사합니다.' },
+          { id: 3, text: '對不起。', korean: '죄송합니다.' },
+          { id: 4, text: '好的。', korean: '네 / 예.' },
+          { id: 5, text: '我知道了。', korean: '알겠습니다.' },
+          { id: 6, text: '那是什麼意思？', korean: '무슨 뜻이에요?' },
+          { id: 7, text: '請你再說一次。', korean: '한 번 더 말씀해 주세요.' },
+          { id: 8, text: '請你講慢一點。', korean: '좀 더 천천히 말씀해 주세요.' },
+          { id: 9, text: '請問可以幫我拍照嗎？', korean: '사진 찍어 주셔도 될까요?' },
+          { id: 10, text: '我想要換錢(換匯)。', korean: '환전 하고 싶어요.' },
+          { id: 11, text: '多少錢？', korean: '얼마예요?' },
+          { id: 12, text: '請問 xx 在哪裡？', korean: 'xx 어디에 있어요?', additional: `
+            <table class="table table-bordered">
+              <tbody>
+          <tr>
+            <td>公車站<br>버스 정류장 <button class="btn btn-success btn-sm" onclick="playAudio('버스 정류장')">播放</button></td>
+            <td>地鐵站<br>지하철역 <button class="btn btn-success btn-sm" onclick="playAudio('지하철역')">播放</button></td>
+          </tr>
+          <tr>
+            <td>行李提領處<br>수하물 찾는 곳 <button class="btn btn-success btn-sm" onclick="playAudio('수하물 찾는 곳')">播放</button></td>
+            <td>登機門<br>게이트 <button class="btn btn-success btn-sm" onclick="playAudio('게이트')">播放</button></td>
+          </tr>
+          <tr>
+            <td>廁所<br>화장실 <button class="btn btn-success btn-sm" onclick="playAudio('화장실')">播放</button></td>
+            <td>警察局<br>경찰서 <button class="btn btn-success btn-sm" onclick="playAudio('경찰서')">播放</button></td>
+          </tr>
+        </tbody>
+            </table>
+          `}, 
+          { id: 13, text: '請問這個在哪裡？', korean: '이거 어디에 있어요?' },
+          { id: 14, text: '我的 xx 不見了。', korean: '제 xx 잃어버렸어요.', additionalInfo: `
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td>手機<br>휴대폰 <button class="btn btn-success btn-sm" onclick="playAudio('휴대폰')">播放</button></td>
+                      <td>信用卡<br>신용카드 <button class="btn btn-success btn-sm" onclick="playAudio('신용카드')">播放</button></td>
+                    </tr>
+                    <tr>
+                      <td>護照<br>여권 <button class="btn btn-success btn-sm" onclick="playAudio('여권')">播放</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            `
+          }
         ],
         transportation: [
-          { id: 1, text: '請問去首爾站的機場巴士要到哪裡搭？', korean: '서울역에 가는 공항버스 어디서 타요?' },
-          { id: 2, text: '這台車有到xx站嗎？', korean: '이 버스 xx역 가요?' }
+          { id: 1, text: '請問去海雲臺站的機場巴士要到哪裡搭？', korean: '해운대역에 가는 공항버스 어디서 타요?' },
+          { id: 2, text: '這台車有到 xx 站嗎？', korean: '이 버스 xx역 가요?' },
+          { id: 3, text: '司機，我要下車。', korean: '기사님, 내릴게요.' },
+          { id: 4, text: '請幫我叫計程車。', korean: '택시 불러주세요.' },
+          { id: 5, text: '請送我到這個地址。', korean: '이 주소로 가주세요.' },
+          { id: 6, text: '還有多遠？', korean: '얼마나 더 가야해요?' },
+          { id: 7, text: '請在這裡讓我下車 / 我要在這裡下車。', korean: '여기서 내려주세요 / 여기서 내릴게요.' },
+          { id: 8, text: '要從幾號出口出去呢？', korean: '몇 번 출구로 나가야 돼요?' },
+          { id: 9, text: '要在哪裡換乘呢？', korean: '어디서 갈아타요?' },
+          { id: 10, text: '不好意思、借過。', korean: '잠시만요.' },
+          { id: 11, text: '請幫我開門。', korean: '문 열어주세요.' }
         ],
         accommodation: [
-          { id: 1, text: '請問現在可以check-in嗎？', korean: '지금 체크인 할 수 있을까요?' },
-          { id: 2, text: '請幫我換另一個房間', korean: '다른 방으로 바꿔주세요' }
+          { id: 1, text: '請問現在可以 check-in 嗎？', korean: '지금 체크인 할 수 있을까요?' },
+          { id: 2, text: '我要 check-in。', korean: '체크인하려고요.' },
+          { id: 3, text: '我用 AirBnb（訂房軟體、官網）預約了。', korean: 'AirBnb으로 예약했어요.' },
+          { id: 4, text: '可以再多給我一些 xx 嗎？', korean: 'xx 좀 더 받을 수 있을까요?' },
+          { id: 5, text: '請幫我換另一個房間。', korean: '다른 방으로 바꿔주세요.' },
+          { id: 6, text: '請幫我把行李搬到房間。', korean: '짐을 방까지 부탁해요.' },
+          { id: 7, text: '請告訴我 wifi 的密碼。', korean: '와이파이 비밀번호 알려주세요.' },
+          { id: 8, text: '請問有包含早餐嗎？', korean: '아침식사 포함되어 있나요?' },
+          { id: 9, text: '早餐要另外加價嗎？', korean: '아침식사 따로 구매해야 하나요?' },
+          { id: 10, text: '請問早餐時間是幾點呢？', korean: '조식 운영 시간이 어떻게 되나요?' },
+          { id: 11, text: '請問有電梯嗎？', korean: '엘레베이터가 있나요?' },
+          { id: 12, text: '可以再加一位嗎？', korean: '한 명 더 추가할 수 있나요?' },
+          { id: 13, text: '我要 check-out。', korean: '체크아웃하려고요.' },
+          { id: 14, text: '請問可以寄放行李嗎？', korean: '제 짐을 맡길 장소가 있을까요?' },
+          { id: 15, text: '退房時間是幾點？', korean: '체크아웃 시간은 몇 시에요?' }
         ],
         restaurant: [
-          { id: 1, text: '請給我這個', korean: '이거로 주세요' },
-          { id: 2, text: '請幫我做不辣的', korean: '안 맵게 해주세요' }
+          { id: 1, text: '總共有 x 位', korean: 'x 명이에요.' },
+          { id: 2, text: '請問要等多久呢？', korean: '얼마나 기다려야 해요?' },
+          { id: 3, text: '老闆 / 店員。', korean: '사장님, 저기요, 이모님' },
+          { id: 4, text: '我要點餐。', korean: '주문 할게요.' },
+          { id: 5, text: '請問有英文/中文菜單嗎？', korean: '(영어 / 중국어) 메뉴판 있나요?' },
+          { id: 6, text: '可以試吃嗎？', korean: '맛보기 할 수 있어요?' },
+          { id: 7, text: '請給我這個。', korean: '이거로 주세요.' },
+          { id: 8, text: '請幫我做不辣的。', korean: '안 맵게 해주세요.' },
+          { id: 9, text: '請再給我一份。', korean: '하나 더 주세요.' },
+          { id: 10, text: '請再給我一些小菜。', korean: '반찬 좀 더 주세요.' },
+          { id: 11, text: '我不能吃 xx。', korean: 'xx 못 먹어요.' },
+          { id: 12, text: '請給我水。', korean: '물 좀 주세요.' },
+          { id: 13, text: '請幫我結帳。', korean: '계산 해주세요.' },
+          { id: 14, text: '請幫我打包。', korean: '포장해 주세요.' },
+          { id: 15, text: '保重。', korean: '안녕히 계세요.' }
         ],
         shopping: [
-          { id: 1, text: '請算我便宜一點', korean: '좀 깎아주세요' },
-          { id: 2, text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?' }
+          { id: 1, text: '請算我便宜一點。', korean: '좀 깎아주세요.' },
+          { id: 2, text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?' },
+          { id: 3, text: '請給我這個。', korean: '이거로 주세요.' },
+          { id: 4, text: '請問有這個嗎？', korean: '혹시 이거 있으세요?' },
+          { id: 5, text: '我想要退貨。', korean: '반품 하고 싶어요.' },
+          { id: 6, text: '我想要換貨。', korean: '교환 하고 싶어요.' },
+          { id: 7, text: '請問有其他尺寸嗎？', korean: '다른 사이즈 있나요?' },
+          { id: 8, text: '請問還有其他顏色嗎？', korean: '혹시 다른 색상있을까요?' },
+          { id: 9, text: '請問需要收據嗎？', korean: '영수증 필요하세요?' }
         ]
       };
 
