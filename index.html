@@ -9,7 +9,7 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
-      font-size: 1.1rem;
+      font-size: 1.4rem; /* 增大字體 */
     }
     #buttons {
       margin-bottom: 20px;
@@ -20,7 +20,7 @@
       margin-right: 10px;
       margin-bottom: 10px;
       padding: 10px;
-      font-size: 0.9rem;
+      font-size: 1rem; /* 增大按鈕文字 */
     }
     #content {
       margin-top: 20px;
@@ -34,10 +34,12 @@
     }
     .text-chinese {
       font-family: 'cwTeXFangSong', serif;
+      font-size: 1.6rem; /* 增大中文字體 */
       margin-bottom: 5px;
     }
     .text-korean {
       font-family: 'Noto Serif KR', serif;
+      font-size: 1.6rem; /* 增大韓文字體 */
       margin-bottom: 10px;
     }
     .play-button {
@@ -50,6 +52,10 @@
 </head>
 <body>
   <div class="container">
+    <div class="text-center mt-4 mb-4">
+      <h2>怡娟와 🪣 의 釜山行前韓語抱佛腳班</h2> <!-- 新增標題 -->
+    </div>
+
     <div id="buttons" class="btn-group" role="group">
       <button class="btn btn-primary" onclick="showContent('basic')">必備基本用語</button>
       <button class="btn btn-primary" onclick="showContent('transportation')">交通篇</button>
