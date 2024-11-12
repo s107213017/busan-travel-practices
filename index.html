@@ -110,22 +110,37 @@
       });
     };
 
-    // 播放音頻函數，使用 SpeechSynthesis API，移除非韓文字符
-    async function playAudio(text) {
-      // 確保語音加載完成
+    document.addEventListener('DOMContentLoaded', async function() {
+      // 確保語音已經加載
       await setVoices();
-
-      // 只保留韓文字符，移除其他非韓文字符
-      const koreanText = text.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣\s]/g, '');
-
-      const utterance = new SpeechSynthesisUtterance(koreanText);
-      utterance.lang = 'ko-KR'; // 設定語言為韓文
-      utterance.rate = 1;        // 語速，範圍 0.1 到 10
-      utterance.pitch = 1;       // 音調，範圍 0 到 2
-      utterance.volume = 1;      // 音量，範圍 0 到 1
-
-      window.speechSynthesis.speak(utterance);
-    }
+    
+      // 改進後的播放音頻函數
+      window.playAudio = function(text) {
+        // 創建 SpeechSynthesisUtterance 對象，並設置語言為韓文
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        utterance.rate = 1;  // 語速，範圍 0.1 到 10
+        utterance.pitch = 1; // 音調，範圍 0 到 2
+        utterance.volume = 1; // 音量，範圍 0 到 1
+    
+        window.speechSynthesis.speak(utterance);
+      };
+    
+      // 確保語音加載的函數
+      function setVoices() {
+        return new Promise((resolve, reject) => {
+          let timer;
+          const synth = window.speechSynthesis;
+    
+          timer = setInterval(() => {
+            if (synth.getVoices().length !== 0) {
+              resolve(synth.getVoices());
+              clearInterval(timer);
+            }
+          }, 10);
+        });
+      }
+    });
   });
 </script>
 </body>
