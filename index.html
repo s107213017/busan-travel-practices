@@ -2,49 +2,57 @@
 <html>
 <head>
   <title>韓語旅遊會話學習</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     @import url('https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css');
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap');
     body {
       font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
     }
     #buttons {
       margin-bottom: 20px;
     }
-    button {
-      margin-right: 10px;
-      padding: 10px;
+    .btn-category {
+      margin: 5px;
     }
     #content {
       margin-top: 20px;
     }
     .dialog {
       margin-bottom: 20px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     .play-button {
-      margin-left: 10px;
+      margin-top: 10px;
     }
     .text-chinese {
       font-family: 'cwTeXFangSong', serif;
-      display: block;
+      font-size: 1.2em;
       margin-bottom: 5px;
     }
     .text-korean {
       font-family: 'Noto Serif KR', serif;
-      display: block;
+      font-size: 1.2em;
       margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="buttons">
-    <button onclick="showContent('basic')">必備基本用語</button>
-    <button onclick="showContent('transportation')">交通篇</button>
-    <button onclick="showContent('accommodation')">住宿篇</button>
-    <button onclick="showContent('restaurant')">餐廳篇</button>
-    <button onclick="showContent('shopping')">購物篇</button>
+  <div class="container mt-5">
+    <div id="buttons" class="text-center">
+      <button class="btn btn-primary btn-category" onclick="showContent('basic')">必備基本用語</button>
+      <button class="btn btn-primary btn-category" onclick="showContent('transportation')">交通篇</button>
+      <button class="btn btn-primary btn-category" onclick="showContent('accommodation')">住宿篇</button>
+      <button class="btn btn-primary btn-category" onclick="showContent('restaurant')">餐廳篇</button>
+      <button class="btn btn-primary btn-category" onclick="showContent('shopping')">購物篇</button>
+    </div>
+    <div id="content"></div>
   </div>
-  <div id="content"></div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // 定義資料內容
@@ -76,14 +84,17 @@
       window.showContent = function(category) {
         const container = document.getElementById('content');
         container.innerHTML = '';
+
         contents[category].forEach((item) => {
           const dialogDiv = document.createElement('div');
           dialogDiv.classList.add('dialog');
-          dialogDiv.innerHTML = `(${item.id}) <span class="text-chinese">${item.text}</span><span class="text-korean">${item.korean}</span>`;
+          dialogDiv.innerHTML = `<span class="text-chinese">(${item.id}) ${item.text}</span><span class="text-korean">${item.korean}</span>`;
+
           const playButton = document.createElement('button');
-          playButton.classList.add('play-button');
+          playButton.classList.add('btn', 'btn-success', 'play-button');
           playButton.innerText = '播放';
           playButton.onclick = () => playAudio(item.korean);
+
           dialogDiv.appendChild(playButton);
           container.appendChild(dialogDiv);
         });
@@ -97,7 +108,10 @@
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ text })
+            body: JSON.stringify({
+              text: text,
+              languageCode: 'ko-KR',
+            })
           });
 
           if (!response.ok) {
@@ -106,13 +120,10 @@
 
           // 獲取音頻數據
           const data = await response.json();
-          const audioContent = data.audioContent;
-
-          // 將 base64 音頻轉換為 Blob 並播放
-          const audioBlob = new Blob([Uint8Array.from(atob(audioContent), c => c.charCodeAt(0))], { type: 'audio/mp3' });
-          const audioUrl = URL.createObjectURL(audioBlob);
+          const audioSrc = `data:audio/mp3;base64,${data.audioContent}`;
           
-          const audio = new Audio(audioUrl);
+          // 播放音頻
+          const audio = new Audio(audioSrc);
           audio.play();
         } catch (error) {
           console.error('播放語音時發生錯誤：', error);
@@ -121,5 +132,8 @@
       };
     });
   </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
