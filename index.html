@@ -110,12 +110,15 @@
       });
     };
 
-    // 播放音頻函數，使用 SpeechSynthesis API
+    // 播放音頻函數，使用 SpeechSynthesis API，移除非韓文字符
     async function playAudio(text) {
       // 確保語音加載完成
       await setVoices();
 
-      const utterance = new SpeechSynthesisUtterance(text);
+      // 只保留韓文字符，移除其他非韓文字符
+      const koreanText = text.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣\s]/g, '');
+
+      const utterance = new SpeechSynthesisUtterance(koreanText);
       utterance.lang = 'ko-KR'; // 設定語言為韓文
       utterance.rate = 1;        // 語速，範圍 0.1 到 10
       utterance.pitch = 1;       // 音調，範圍 0 到 2
