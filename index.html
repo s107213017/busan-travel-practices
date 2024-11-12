@@ -82,40 +82,40 @@
           { id: 9, text: '請問可以幫我拍照嗎？', korean: '사진 찍어 주셔도 될까요?' },
           { id: 10, text: '我想要換錢(換匯)。', korean: '환전 하고 싶어요.' },
           { id: 11, text: '多少錢？', korean: '얼마예요?' },
-          { id: 12, text: '請問 xx 在哪裡？', korean: 'xx 어디에 있어요?', additional: `
-            <table class="table table-bordered">
+          { id: 12, text: '請問 xx 在哪裡？', korean: 'xx 어디에 있어요?', additionalInfo: `
+              <div class="table-responsive" style="max-width: 500px; margin: auto;">
+                <table class="table table-bordered" style="font-size: 0.875rem;">
               <tbody>
           <tr>
-            <td>公車站<br>버스 정류장 <button class="btn btn-success btn-sm" onclick="playAudio('버스 정류장')">播放</button></td>
-            <td>地鐵站<br>지하철역 <button class="btn btn-success btn-sm" onclick="playAudio('지하철역')">播放</button></td>
+            <td>公車站 버스 정류장 <button class="btn btn-success btn-sm" onclick="playAudio('버스 정류장')">播放</button></td>
+            <td>地鐵站 지하철역 <button class="btn btn-success btn-sm" onclick="playAudio('지하철역')">播放</button></td>
           </tr>
           <tr>
-            <td>行李提領處<br>수하물 찾는 곳 <button class="btn btn-success btn-sm" onclick="playAudio('수하물 찾는 곳')">播放</button></td>
-            <td>登機門<br>게이트 <button class="btn btn-success btn-sm" onclick="playAudio('게이트')">播放</button></td>
+            <td>行李提領處 수하물 찾는 곳 <button class="btn btn-success btn-sm" onclick="playAudio('수하물 찾는 곳')">播放</button></td>
+            <td>登機門 게이트 <button class="btn btn-success btn-sm" onclick="playAudio('게이트')">播放</button></td>
           </tr>
           <tr>
-            <td>廁所<br>화장실 <button class="btn btn-success btn-sm" onclick="playAudio('화장실')">播放</button></td>
-            <td>警察局<br>경찰서 <button class="btn btn-success btn-sm" onclick="playAudio('경찰서')">播放</button></td>
+            <td>廁所 화장실 <button class="btn btn-success btn-sm" onclick="playAudio('화장실')">播放</button></td>
+            <td>警察局 경찰서 <button class="btn btn-success btn-sm" onclick="playAudio('경찰서')">播放</button></td>
           </tr>
         </tbody>
             </table>
           `}, 
           { id: 13, text: '請問這個在哪裡？', korean: '이거 어디에 있어요?' },
           { id: 14, text: '我的 xx 不見了。', korean: '제 xx 잃어버렸어요.', additionalInfo: `
-              <div class="table-responsive">
-                <table class="table table-bordered">
+              <div class="table-responsive" style="max-width: 500px; margin: auto;">
+                <table class="table table-bordered" style="font-size: 0.875rem;">
                   <tbody>
                     <tr>
-                      <td>手機<br>휴대폰 <button class="btn btn-success btn-sm" onclick="playAudio('휴대폰')">播放</button></td>
-                      <td>信用卡<br>신용카드 <button class="btn btn-success btn-sm" onclick="playAudio('신용카드')">播放</button></td>
+                      <td>手機 휴대폰 <button class="btn btn-success btn-sm" onclick="playAudio('휴대폰')">播放</button></td>
+                      <td>信用卡 신용카드 <button class="btn btn-success btn-sm" onclick="playAudio('신용카드')">播放</button></td>
                     </tr>
                     <tr>
-                      <td>護照<br>여권 <button class="btn btn-success btn-sm" onclick="playAudio('여권')">播放</button></td>
+                      <td>護照 여권 <button class="btn btn-success btn-sm" onclick="playAudio('여권')">播放</button></td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            `
+              </div> `
           }
         ],
         transportation: [
