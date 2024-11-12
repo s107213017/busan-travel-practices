@@ -55,6 +55,7 @@
     <div class="text-center mt-4 mb-4">
       <h2><span class="text-chinese">🇰🇷✈️怡娟</span><span class="text-korean">와 🪣 의</span><span class="text-chinese">釜山行前韓語會話抱佛腳班🎙️📚</span></h2> <!-- 新增標題 -->
     </div>
+      <h6>建議使用橫向螢幕較不傷眼！👀</h6>
 
     <div id="buttons" class="btn-group" role="group">
       <button class="btn btn-primary" onclick="showContent('basic')">必備基本用語</button>
@@ -195,7 +196,7 @@
           const textDiv = document.createElement('div');
           textDiv.classList.add('dialog-text');
           textDiv.innerHTML = `
-            (${item.id}) <br/>
+            (${item.id}) 
             <span class="text-chinese">${item.text}</span><br/>
             <span class="text-korean">${item.korean}</span>
             ${item.additionalInfo ? item.additionalInfo : ''}
