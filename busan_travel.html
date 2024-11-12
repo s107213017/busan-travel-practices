@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>韓語旅遊會話學習</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #buttons {
+      margin-bottom: 20px;
+    }
+    button {
+      margin-right: 10px;
+      padding: 10px;
+    }
+    #content {
+      margin-top: 20px;
+    }
+    .dialog {
+      margin-bottom: 10px;
+    }
+    .play-button {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="buttons">
+    <button onclick="showContent('basic')">必備基本用語</button>
+    <button onclick="showContent('transportation')">交通篇</button>
+    <button onclick="showContent('accommodation')">住宿篇</button>
+    <button onclick="showContent('restaurant')">餐廳篇</button>
+    <button onclick="showContent('shopping')">購物篇</button>
+  </div>
+
+  <div id="content"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 定義資料內容
+      const contents = {
+        basic: [
+          { text: '你好', korean: '안녕하세요', romanized: 'an-nyeong-ha-se-yo' },
+          { text: '謝謝', korean: '감사합니다', romanized: 'gam-sa-hab-ni-da' },
+          { text: '對不起', korean: '죄송합니다', romanized: 'joe-song-hab-ni-da' }
+        ],
+        transportation: [
+          { text: '請問去首爾站的機場巴士要到哪裡搭？', korean: '서울역에 가는 공항버스 어디서 타요?', romanized: 'seoul-yeog-e ga-neun gong-hang-beo-seu eo-di-seo ta-yo?' },
+          { text: '這台車有到xx站嗎？', korean: '이 버스 xx역 가요?', romanized: 'i beo-seu xx yeog ga-yo?' }
+        ],
+        accommodation: [
+          { text: '請問現在可以check-in嗎？', korean: '지금 체크인 할 수 있을까요?', romanized: 'ji-geum chekeu-in hal su iss-eul-kka-yo?' },
+          { text: '請幫我換另一個房間', korean: '다른 방으로 바꿔주세요', romanized: 'da-reun bang-eu-ro ba-kkwo-ju-se-yo' }
+        ],
+        restaurant: [
+          { text: '請給我這個', korean: '이거로 주세요', romanized: 'i-geo-lo ju-se-yo' },
+          { text: '請幫我做不辣的', korean: '안 맵게 해주세요', romanized: 'an maeb-ge hae-ju-se-yo' }
+        ],
+        shopping: [
+          { text: '請算我便宜一點', korean: '좀 깎아주세요', romanized: 'jom kkakka-ju-se-yo' },
+          { text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?', romanized: 'ibeo bwa-do doe-na-yo?' }
+        ]
+      };
+
+      // 定義 showContent 函數並設置為全局變量
+      window.showContent = function(category) {
+        const container = document.getElementById('content');
+        container.innerHTML = '';
+
+        contents[category].forEach((item, index) => {
+          const dialogDiv = document.createElement('div');
+          dialogDiv.classList.add('dialog');
+          dialogDiv.innerHTML = `${item.text} (${item.korean}) [${item.romanized}] `;
+
+          const playButton = document.createElement('button');
+          playButton.classList.add('play-button');
+          playButton.innerText = '播放';
+          playButton.onclick = () => playAudio(item.korean);
+
+          dialogDiv.appendChild(playButton);
+          container.appendChild(dialogDiv);
+        });
+      };
+
+      // 播放音頻函數
+      window.playAudio = function(text) {
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=ko`;
+        const audio = new Audio(url);
+        audio.play();
+      };
+    });
+  </script>
+</body>
+</html>
