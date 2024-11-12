@@ -82,11 +82,16 @@
         });
       };
 
-      // 播放音頻函數
+      // 播放音頻函數，使用 SpeechSynthesis API
       window.playAudio = function(text) {
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=ko`;
-        const audio = new Audio(url);
-        audio.play();
+          // 創建 SpeechSynthesisUtterance 對象
+          const utterance = new SpeechSynthesisUtterance(text);
+  
+          // 設置語言為韓語
+          utterance.lang = 'ko-KR';
+  
+          // 播放語音
+          speechSynthesis.speak(utterance);
       };
     });
   </script>
