@@ -49,94 +49,78 @@
   <div id="content"></div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', async function() {
-    var synth = window.speechSynthesis;
+    document.addEventListener('DOMContentLoaded', function() {
+      var synth = window.speechSynthesis;
+      var voices = [];
 
-    // 定義函數以等待語音加載
-    function setVoices() {
-      return new Promise((resolve, reject) => {
-        let timer;
-        timer = setInterval(() => {
-          if (synth.getVoices().length !== 0) {
-            resolve(synth.getVoices());
-            clearInterval(timer);
-          }
-        }, 10);
-      });
-    }
+      // 確保語音已經加載
+      function setVoices() {
+        voices = synth.getVoices();
+      }
 
-    // 確保語音已經加載
-    await setVoices();
+      // 在語音列表加載後設置語音
+      if (synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = setVoices;
+      }
 
-    // 定義資料內容
-    const contents = {
-      basic: [
-        { id: 1, text: '你好', korean: '안녕하세요' },
-        { id: 2, text: '謝謝', korean: '감사합니다' },
-        { id: 3, text: '對不起', korean: '죄송합니다' }
-      ],
-      transportation: [
-        { id: 1, text: '請問去首爾站的機場巴士要到哪裡搭？', korean: '서울역에 가는 공항버스 어디서 타요?' },
-        { id: 2, text: '這台車有到xx站嗎？', korean: '이 버스 xx역 가요?' }
-      ],
-      accommodation: [
-        { id: 1, text: '請問現在可以check-in嗎？', korean: '지금 체크인 할 수 있을까요?' },
-        { id: 2, text: '請幫我換另一個房間', korean: '다른 방으로 바꿔주세요' }
-      ],
-      restaurant: [
-        { id: 1, text: '請給我這個', korean: '이거로 주세요' },
-        { id: 2, text: '請幫我做不辣的', korean: '안 맵게 해주세요' }
-      ],
-      shopping: [
-        { id: 1, text: '請算我便宜一點', korean: '좀 깎아주세요' },
-        { id: 2, text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?' }
-      ]
-    };
+      // 定義資料內容
+      const contents = {
+        basic: [
+          { id: 1, text: '你好', korean: '안녕하세요' },
+          { id: 2, text: '謝謝', korean: '감사합니다' },
+          { id: 3, text: '對不起', korean: '죄송합니다' }
+        ],
+        transportation: [
+          { id: 1, text: '請問去首爾站的機場巴士要到哪裡搭？', korean: '서울역에 가는 공항버스 어디서 타요?' },
+          { id: 2, text: '這台車有到xx站嗎？', korean: '이 버스 xx역 가요?' }
+        ],
+        accommodation: [
+          { id: 1, text: '請問現在可以check-in嗎？', korean: '지금 체크인 할 수 있을까요?' },
+          { id: 2, text: '請幫我換另一個房間', korean: '다른 방으로 바꿔주세요' }
+        ],
+        restaurant: [
+          { id: 1, text: '請給我這個', korean: '이거로 주세요' },
+          { id: 2, text: '請幫我做不辣的', korean: '안 맵게 해주세요' }
+        ],
+        shopping: [
+          { id: 1, text: '請算我便宜一點', korean: '좀 깎아주세요' },
+          { id: 2, text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?' }
+        ]
+      };
 
-    // 定義 showContent 函數並設置為全局變量
-    window.showContent = function(category) {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
+      // 定義 showContent 函數並設置為全局變量
+      window.showContent = function(category) {
+        const container = document.getElementById('content');
+        container.innerHTML = '';
 
-      contents[category].forEach((item) => {
-        const dialogDiv = document.createElement('div');
-        dialogDiv.classList.add('dialog');
+        contents[category].forEach((item) => {
+          const dialogDiv = document.createElement('div');
+          dialogDiv.classList.add('dialog');
+          dialogDiv.innerHTML = `(${item.id}) <span class="text-chinese">${item.text}</span><span class="text-korean">${item.korean}</span>`;
 
-        // 中文部分
-        const chineseText = document.createElement('span');
-        chineseText.classList.add('text-chinese');
-        chineseText.textContent = `(${item.id}) ${item.text}`;
-        dialogDiv.appendChild(chineseText);
+          const playButton = document.createElement('button');
+          playButton.classList.add('play-button');
+          playButton.innerText = '播放';
+          playButton.onclick = () => playAudio(item.korean);
 
-        // 韓文部分
-        const koreanText = document.createElement('span');
-        koreanText.classList.add('text-korean');
-        koreanText.textContent = item.korean;
-        dialogDiv.appendChild(koreanText);
+          dialogDiv.appendChild(playButton);
+          container.appendChild(dialogDiv);
+        });
+      };
 
-        // 播放按鈕
-        const playButton = document.createElement('button');
-        playButton.classList.add('play-button');
-        playButton.innerText = '播放';
-        playButton.onclick = () => playAudio(item.korean);
+      // 播放音頻函數
+      window.playAudio = function(text) {
+        // 創建 SpeechSynthesisUtterance 對象，並設置語言為韓文
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        utterance.rate = 1;  // 語速，範圍 0.1 到 10
+        utterance.pitch = 1; // 音調，範圍 0 到 2
+        utterance.volume = 1; // 音量，範圍 0 到 1
 
-        dialogDiv.appendChild(playButton);
-        container.appendChild(dialogDiv);
-      });
-    };
-
-    // 改進後的播放音頻函數
-    window.playAudio = function(text) {
-      // 創建 SpeechSynthesisUtterance 對象，並設置語言為韓文
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ko-KR';
-      utterance.rate = 1;  // 語速，範圍 0.1 到 10
-      utterance.pitch = 1; // 音調，範圍 0 到 2
-      utterance.volume = 1; // 音量，範圍 0 到 1
-
-      window.speechSynthesis.speak(utterance);
-    };
-  });
+        // 在用戶互動後播放語音，避免手機瀏覽器的限制
+        synth.speak(utterance);
+      };
+    });
   </script>
 </body>
 </html>
