@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     });
 
     const { text } = req.body;
-    
+
     const request = {
       input: { text },
       voice: { languageCode: 'ko-KR', ssmlGender: 'FEMALE' },
@@ -20,9 +20,10 @@ export default async function handler(req, res) {
     };
 
     const [response] = await client.synthesizeSpeech(request);
-    const audioContent = response.audioContent.toString('base64');
+    const audioContent = response.audioContent;
 
-    res.status(200).json({ audioContent });
+    // 音頻轉換為 base64 並返回
+    res.status(200).json({ audioContent: audioContent.toString('base64') });
   } catch (error) {
     console.error('TTS Error:', error);
     res.status(500).json({ error: 'Failed to generate speech' });
