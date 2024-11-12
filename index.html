@@ -82,16 +82,25 @@
         });
       };
 
-      // 播放音頻函數，使用 SpeechSynthesis API
+      // // 播放音頻函數，使用 SpeechSynthesis API
+      // window.playAudio = function(text) {
+      //     // 創建 SpeechSynthesisUtterance 對象
+      //     const utterance = new SpeechSynthesisUtterance(text);
+  
+      //     // 設置語言為韓語
+      //     utterance.lang = 'ko-KR';
+  
+      //     // 播放語音
+      //     speechSynthesis.speak(utterance);
+      // };
       window.playAudio = function(text) {
-          // 創建 SpeechSynthesisUtterance 對象
           const utterance = new SpeechSynthesisUtterance(text);
-  
-          // 設置語言為韓語
-          utterance.lang = 'ko-KR';
-  
-          // 播放語音
-          speechSynthesis.speak(utterance);
+          utterance.lang = 'ko-KR'; // 設定語言為韓文
+          utterance.rate = 1;        // 語速，範圍 0.1 到 10
+          utterance.pitch = 1;       // 音調，範圍 0 到 2
+          utterance.volume = 1;      // 音量，範圍 0 到 1
+
+          window.speechSynthesis.speak(utterance);
       };
     });
   </script>
