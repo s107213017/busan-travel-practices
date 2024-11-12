@@ -97,10 +97,7 @@
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              text: text,
-              languageCode: 'ko-KR',
-            })
+            body: JSON.stringify({ text })
           });
 
           if (!response.ok) {
@@ -109,10 +106,13 @@
 
           // 獲取音頻數據
           const data = await response.json();
-          const audioSrc = `data:audio/mp3;base64,${data.audioContent}`;
+          const audioContent = data.audioContent;
+
+          // 將 base64 音頻轉換為 Blob 並播放
+          const audioBlob = new Blob([Uint8Array.from(atob(audioContent), c => c.charCodeAt(0))], { type: 'audio/mp3' });
+          const audioUrl = URL.createObjectURL(audioBlob);
           
-          // 播放音頻
-          const audio = new Audio(audioSrc);
+          const audio = new Audio(audioUrl);
           audio.play();
         } catch (error) {
           console.error('播放語音時發生錯誤：', error);
