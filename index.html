@@ -49,7 +49,7 @@
   <div id="content"></div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', async function() {
     var synth = window.speechSynthesis;
 
     // 定義函數以等待語音加載
@@ -64,6 +64,9 @@
         }, 10);
       });
     }
+
+    // 確保語音已經加載
+    await setVoices();
 
     // 定義資料內容
     const contents = {
@@ -98,8 +101,20 @@
       contents[category].forEach((item) => {
         const dialogDiv = document.createElement('div');
         dialogDiv.classList.add('dialog');
-        dialogDiv.innerHTML = `(${item.id}) ${item.text}<br/>${item.korean}<br/>`;
 
+        // 中文部分
+        const chineseText = document.createElement('span');
+        chineseText.classList.add('text-chinese');
+        chineseText.textContent = `(${item.id}) ${item.text}`;
+        dialogDiv.appendChild(chineseText);
+
+        // 韓文部分
+        const koreanText = document.createElement('span');
+        koreanText.classList.add('text-korean');
+        koreanText.textContent = item.korean;
+        dialogDiv.appendChild(koreanText);
+
+        // 播放按鈕
         const playButton = document.createElement('button');
         playButton.classList.add('play-button');
         playButton.innerText = '播放';
@@ -110,38 +125,18 @@
       });
     };
 
-    document.addEventListener('DOMContentLoaded', async function() {
-      // 確保語音已經加載
-      await setVoices();
-    
-      // 改進後的播放音頻函數
-      window.playAudio = function(text) {
-        // 創建 SpeechSynthesisUtterance 對象，並設置語言為韓文
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ko-KR';
-        utterance.rate = 1;  // 語速，範圍 0.1 到 10
-        utterance.pitch = 1; // 音調，範圍 0 到 2
-        utterance.volume = 1; // 音量，範圍 0 到 1
-    
-        window.speechSynthesis.speak(utterance);
-      };
-    
-      // 確保語音加載的函數
-      function setVoices() {
-        return new Promise((resolve, reject) => {
-          let timer;
-          const synth = window.speechSynthesis;
-    
-          timer = setInterval(() => {
-            if (synth.getVoices().length !== 0) {
-              resolve(synth.getVoices());
-              clearInterval(timer);
-            }
-          }, 10);
-        });
-      }
-    });
+    // 改進後的播放音頻函數
+    window.playAudio = function(text) {
+      // 創建 SpeechSynthesisUtterance 對象，並設置語言為韓文
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ko-KR';
+      utterance.rate = 1;  // 語速，範圍 0.1 到 10
+      utterance.pitch = 1; // 音調，範圍 0 到 2
+      utterance.volume = 1; // 音量，範圍 0 到 1
+
+      window.speechSynthesis.speak(utterance);
+    };
   });
-</script>
+  </script>
 </body>
 </html>
