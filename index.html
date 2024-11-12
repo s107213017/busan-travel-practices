@@ -3,6 +3,9 @@
 <head>
   <title>韓語旅遊會話學習</title>
   <style>
+    @import url('https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css'); /* 引入中文字體 cwTeXFangSong */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap'); /* 引入韓文字體 Noto Serif KR */
+
     body {
       font-family: Arial, sans-serif;
     }
@@ -17,10 +20,20 @@
       margin-top: 20px;
     }
     .dialog {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     .play-button {
       margin-left: 10px;
+    }
+    .text-chinese {
+      font-family: 'cwTeXFangSong', serif;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .text-korean {
+      font-family: 'Noto Serif KR', serif;
+      display: block;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -40,25 +53,25 @@
       // 定義資料內容
       const contents = {
         basic: [
-          { text: '你好', korean: '안녕하세요', romanized: 'an-nyeong-ha-se-yo' },
-          { text: '謝謝', korean: '감사합니다', romanized: 'gam-sa-hab-ni-da' },
-          { text: '對不起', korean: '죄송합니다', romanized: 'joe-song-hab-ni-da' }
+          { text: '你好', korean: '안녕하세요' },
+          { text: '謝謝', korean: '감사합니다' },
+          { text: '對不起', korean: '죄송합니다' }
         ],
         transportation: [
-          { text: '請問去首爾站的機場巴士要到哪裡搭？', korean: '서울역에 가는 공항버스 어디서 타요?', romanized: 'seoul-yeog-e ga-neun gong-hang-beo-seu eo-di-seo ta-yo?' },
-          { text: '這台車有到xx站嗎？', korean: '이 버스 xx역 가요?', romanized: 'i beo-seu xx yeog ga-yo?' }
+          { text: '請問去首爾站的機場巴士要到哪裡搭？', korean: '서울역에 가는 공항버스 어디서 타요?' },
+          { text: '這台車有到xx站嗎？', korean: '이 버스 xx역 가요?' }
         ],
         accommodation: [
-          { text: '請問現在可以check-in嗎？', korean: '지금 체크인 할 수 있을까요?', romanized: 'ji-geum chekeu-in hal su iss-eul-kka-yo?' },
-          { text: '請幫我換另一個房間', korean: '다른 방으로 바꿔주세요', romanized: 'da-reun bang-eu-ro ba-kkwo-ju-se-yo' }
+          { text: '請問現在可以check-in嗎？', korean: '지금 체크인 할 수 있을까요?' },
+          { text: '請幫我換另一個房間', korean: '다른 방으로 바꿔주세요' }
         ],
         restaurant: [
-          { text: '請給我這個', korean: '이거로 주세요', romanized: 'i-geo-lo ju-se-yo' },
-          { text: '請幫我做不辣的', korean: '안 맵게 해주세요', romanized: 'an maeb-ge hae-ju-se-yo' }
+          { text: '請給我這個', korean: '이거로 주세요' },
+          { text: '請幫我做不辣的', korean: '안 맵게 해주세요' }
         ],
         shopping: [
-          { text: '請算我便宜一點', korean: '좀 깎아주세요', romanized: 'jom kkakka-ju-se-yo' },
-          { text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?', romanized: 'ibeo bwa-do doe-na-yo?' }
+          { text: '請算我便宜一點', korean: '좀 깎아주세요' },
+          { text: '請問可以試穿嗎？', korean: '입어 봐도 되나요?' }
         ]
       };
 
@@ -70,7 +83,17 @@
         contents[category].forEach((item, index) => {
           const dialogDiv = document.createElement('div');
           dialogDiv.classList.add('dialog');
-          dialogDiv.innerHTML = `${item.text} (${item.korean}) [${item.romanized}] `;
+
+          const chineseText = document.createElement('span');
+          chineseText.classList.add('text-chinese');
+          chineseText.innerText = `${index + 1}. ${item.text}`;
+
+          const koreanText = document.createElement('span');
+          koreanText.classList.add('text-korean');
+          koreanText.innerText = item.korean;
+
+          dialogDiv.appendChild(chineseText);
+          dialogDiv.appendChild(koreanText);
 
           const playButton = document.createElement('button');
           playButton.classList.add('play-button');
@@ -82,25 +105,15 @@
         });
       };
 
-      // // 播放音頻函數，使用 SpeechSynthesis API
-      // window.playAudio = function(text) {
-      //     // 創建 SpeechSynthesisUtterance 對象
-      //     const utterance = new SpeechSynthesisUtterance(text);
-  
-      //     // 設置語言為韓語
-      //     utterance.lang = 'ko-KR';
-  
-      //     // 播放語音
-      //     speechSynthesis.speak(utterance);
-      // };
+      // 播放音頻函數，使用 SpeechSynthesis API
       window.playAudio = function(text) {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'ko-KR'; // 設定語言為韓文
-          utterance.rate = 1;        // 語速，範圍 0.1 到 10
-          utterance.pitch = 1;       // 音調，範圍 0 到 2
-          utterance.volume = 1;      // 音量，範圍 0 到 1
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR'; // 設定語言為韓文
+        utterance.rate = 1;        // 語速，範圍 0.1 到 10
+        utterance.pitch = 1;       // 音調，範圍 0 到 2
+        utterance.volume = 1;      // 音量，範圍 0 到 1
 
-          window.speechSynthesis.speak(utterance);
+        window.speechSynthesis.speak(utterance);
       };
     });
   </script>
