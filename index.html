@@ -9,20 +9,25 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
+      font-size: 1.1rem;
     }
     #buttons {
       margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
     }
     button {
       margin-right: 10px;
+      margin-bottom: 10px;
       padding: 10px;
+      font-size: 0.9rem;
     }
     #content {
       margin-top: 20px;
     }
     .dialog {
       margin-bottom: 20px;
-      padding: 20px;
+      padding: 15px;
       border-radius: 10px;
       background-color: #ffffff;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -36,7 +41,10 @@
       margin-bottom: 10px;
     }
     .play-button {
-      margin-right: 15px;
+      margin-bottom: 10px;
+    }
+    .dialog-text {
+      width: 100%;
     }
   </style>
 </head>
@@ -86,7 +94,7 @@
 
         contents[category].forEach((item) => {
           const dialogDiv = document.createElement('div');
-          dialogDiv.classList.add('dialog', 'd-flex', 'align-items-center');
+          dialogDiv.classList.add('dialog');
 
           const playButton = document.createElement('button');
           playButton.classList.add('btn', 'btn-success', 'play-button');
@@ -94,7 +102,7 @@
           playButton.onclick = () => playAudio(item.korean);
 
           const textDiv = document.createElement('div');
-          textDiv.classList.add('ml-3');
+          textDiv.classList.add('dialog-text');
           textDiv.innerHTML = `
             (${item.id}) <br/>
             <span class="text-chinese">${item.text}</span><br/>
