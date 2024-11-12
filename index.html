@@ -3,9 +3,8 @@
 <head>
   <title>韓語旅遊會話學習</title>
   <style>
-    @import url('https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css'); /* 引入中文字體 cwTeXFangSong */
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap'); /* 引入韓文字體 Noto Serif KR */
-
+    @import url('https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap');
     body {
       font-family: Arial, sans-serif;
     }
@@ -45,24 +44,9 @@
     <button onclick="showContent('restaurant')">餐廳篇</button>
     <button onclick="showContent('shopping')">購物篇</button>
   </div>
-
   <div id="content"></div>
-
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var synth = window.speechSynthesis;
-      var voices = [];
-
-      // 確保語音已經加載
-      function setVoices() {
-        voices = synth.getVoices();
-      }
-
-      // 在語音列表加載後設置語音
-      if (synth.onvoiceschanged !== undefined) {
-        synth.onvoiceschanged = setVoices;
-      }
-
       // 定義資料內容
       const contents = {
         basic: [
@@ -92,33 +76,48 @@
       window.showContent = function(category) {
         const container = document.getElementById('content');
         container.innerHTML = '';
-
         contents[category].forEach((item) => {
           const dialogDiv = document.createElement('div');
           dialogDiv.classList.add('dialog');
           dialogDiv.innerHTML = `(${item.id}) <span class="text-chinese">${item.text}</span><span class="text-korean">${item.korean}</span>`;
-
           const playButton = document.createElement('button');
           playButton.classList.add('play-button');
           playButton.innerText = '播放';
           playButton.onclick = () => playAudio(item.korean);
-
           dialogDiv.appendChild(playButton);
           container.appendChild(dialogDiv);
         });
       };
 
-      // 播放音頻函數
-      window.playAudio = function(text) {
-        // 創建 SpeechSynthesisUtterance 對象，並設置語言為韓文
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ko-KR';
-        utterance.rate = 1;  // 語速，範圍 0.1 到 10
-        utterance.pitch = 1; // 音調，範圍 0 到 2
-        utterance.volume = 1; // 音量，範圍 0 到 1
+      // 新的播放音頻函數，使用 Google Cloud TTS API
+      window.playAudio = async function(text) {
+        try {
+          const response = await fetch('/api/tts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: text,
+              languageCode: 'ko-KR',
+            })
+          });
 
-        // 在用戶互動後播放語音，避免手機瀏覽器的限制
-        synth.speak(utterance);
+          if (!response.ok) {
+            throw new Error('語音請求失敗');
+          }
+
+          // 獲取音頻數據
+          const data = await response.json();
+          const audioSrc = `data:audio/mp3;base64,${data.audioContent}`;
+          
+          // 播放音頻
+          const audio = new Audio(audioSrc);
+          audio.play();
+        } catch (error) {
+          console.error('播放語音時發生錯誤：', error);
+          alert('播放失敗，請稍後再試');
+        }
       };
     });
   </script>
